@@ -1,0 +1,58 @@
+:root{
+    --primary-color: #FFCC00;
+    --primary-medium: #ffc500;
+    --on-primary: #333333;
+    --secondary-color: #f3e8bf;
+    --background-color: #FAFAFA;
+    --on-background-color: #999999;
+    --bgc-gradient: linear-gradient(160deg, var(--primary-color) 60%, rgba(231,232,13,1) 100%);
+
+    --max-width: 768px;
+}
+
+* {
+    font-family: 'Roboto', sans-serif;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#app, body {
+    min-height: 100vh;
+}
+
+.content {
+    flex: 1;
+    overflow: auto;
+}
+
+.content  {
+    height: 100%;
+    max-width: 1012px;
+}
+
+// efeitos
+.fade-enter-active,
+.fade-leave-active {
+    transition-duration: 0.4s;
+    transition-property: opacity;
+    transition-timing-function: ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+    opacity: 0
+}
+
+.slide-fade-enter-active {
+    transition: all .2s ease;
+}
+.slide-fade-leave-active {
+    transition: all .2s ease;
+}
+.slide-fade-enter, .slide-fade-leave-to {
+    transform: translateY(10px);
+    opacity: 0;
+}
+
+
