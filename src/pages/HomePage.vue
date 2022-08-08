@@ -18,7 +18,10 @@ onMounted(() => classe && classe.classList.add('app__background__color'));
 <template>
     <div class="home">
         <div class="home__ilustration">
-            <img src="../assets/images/vai-uma-cerveja.jpg" alt="Vai uma cervejinha com seu velho?">
+            <a href="https://www.designi.com.br/c09cbfa3ebefea0c" target="_blank" rel="noopener noreferrer">
+                <img class="home__image" src="../assets/images/vai-uma-cerveja.jpg"
+                    alt="Vai uma cervejinha com seu velho?">
+            </a>
         </div>
 
         <div class="home__searchandress">
@@ -46,7 +49,7 @@ onMounted(() => classe && classe.classList.add('app__background__color'));
     align-self: center;
 }
 
-.home__ilustration>img {
+.home__ilustration>a>.home__image {
     width: 100%;
     height: 400px;
     margin: 16px;
