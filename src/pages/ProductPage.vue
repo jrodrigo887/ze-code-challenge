@@ -4,11 +4,13 @@ import { useStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import ProductCard from '../components/ProductCard.vue';
 import CategoryList from '@/components/CategoryList.vue';
+import { useRouter } from 'vue-router';
 const classe = document.getElementsByClassName('app').item(0);
 
 const { products } = storeToRefs(useStore());
-
 const { addProductToCart, removeProductFromCart } = useStore();
+
+const router = useRouter();
 
 function selectCategory(categoryId: string) {
     console.log(categoryId);
@@ -29,7 +31,15 @@ const categories:{id:string; title: string;}[]  = [
     },
 ]
 
-onMounted(() => { classe && classe.classList.remove('app__background__color'); });
+function loadData() {
+    classe && classe.classList.remove('app__background__color');
+
+    if((products.value.length <= 0)) {
+        router.replace({ name: 'home' });
+    }
+}
+
+onMounted(() => loadData());
 </script>
 <template>
     <div class="product">
