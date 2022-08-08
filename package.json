@@ -1,10 +1,10 @@
 {
-  "name": "maked-beer-delivery",
+  "name": "ze-code-challenge",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "start": "vite --open --port 5173",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "test": "vitest",
