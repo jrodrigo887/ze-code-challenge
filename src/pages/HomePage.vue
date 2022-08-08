@@ -4,6 +4,7 @@ import { SearchAddressDTO } from '@/dtos/searchAndressDTO.js';
 import { useStore } from '@/store'
 import { onMounted } from 'vue';
 const classe = document.getElementsByClassName('app').item(0);
+
 const mainStore = useStore();
 
 function handleAndress(event: SearchAddressDTO) {
@@ -24,7 +25,7 @@ onMounted(() => classe && classe.classList.add('app__background__color'));
             <h2 class="home__searchandress__title">Peça a mais gelada da Cidade</h2>
             <SerachAndress @search-andress="handleAndress" placeholder="Inserir enderço para ver preço"></SerachAndress>
         </div>
-    </div> 
+    </div>
 </template>
 
 <style scoped>
@@ -45,7 +46,7 @@ onMounted(() => classe && classe.classList.add('app__background__color'));
     align-self: center;
 }
 
-.home__ilustration > img {
+.home__ilustration>img {
     width: 100%;
     height: 400px;
     margin: 16px;
@@ -63,64 +64,20 @@ onMounted(() => classe && classe.classList.add('app__background__color'));
 .home__searchandress__title {
     padding: 12px 16px;
     color: var(--on-primary);
-   
+
 }
 
 
 @media screen and (max-width: 471px) {
     .home {
-        grid-template-areas: 
+        grid-template-areas:
             "search_andress"
             "ilustration"
-        ; 
+        ;
     }
+
     .home__ilustration {
         display: none;
     }
 }
-
-/* section {
-    display: inline-flex;
-} */
-
-/* 
-.search-input {
-    display: inline-flex !important;
-} */
-/* .container-wrap {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    class="search-input"
-} */
-
-/* .container-wrap > main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 0 16px;
-    justify-content: center;
-    background-color: var(--primary-color);
-} */
-
-/* h1 {
-    margin: 0;
-} */
-
-/* .container-main {
-    display: flex;
-   
-    background-color: blueviolet;
-    max-height: 100%;
-    justify-content: space-around;
-}
-@media (max-width: 555px) {
-    .container-main {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-        
-    }
-} */
 </style>
