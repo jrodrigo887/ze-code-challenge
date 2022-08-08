@@ -31,9 +31,9 @@ const emit = defineEmits<Emits>();
             </div>
             <div class="card__button">
                 <button @click.stop="emit('removeProduct', product)">-</button>
-                    <transition name="slider" mode="out-in">
-                        <p>{{ cartModel?.quantitySameProduct(product) }}</p>
-                    </transition>
+                <transition name="slider" mode="out-in">
+                    <p>{{ cartModel?.quantitySameProduct(product) }}</p>
+                </transition>
                 <button @click.stop="emit('addProduct', product)">+</button>
             </div>
         </div>
@@ -55,7 +55,7 @@ const emit = defineEmits<Emits>();
     width: 181px;
     height: 208px;
     /* background: #ffffff; */
-    
+
     border-radius: 8px;
     border: 1px solid #fafafa;
     box-shadow: rgb(0 0 0 / 8%) 0px 2px 4px 0px;
@@ -77,7 +77,7 @@ const emit = defineEmits<Emits>();
     background-color: #fff;
 }
 
-.card__brand__selected > p {
+.card__brand__selected>p {
     position: relative;
     right: -4px;
 }
@@ -139,15 +139,15 @@ img {
 
 }
 
-.card__button > p {
-  width: 30px;
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
-  color: var(--primary-color);
+.card__button>p {
+    width: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    color: var(--primary-color);
 }
 
-.card__button > button {
+.card__button>button {
     font-size: 16px;
     cursor: pointer;
     border: none;
@@ -181,5 +181,4 @@ img {
     border-top-right-radius: 8px;
     border-end-end-radius: 8px;
 }
-
 </style>

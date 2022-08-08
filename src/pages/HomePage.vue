@@ -5,11 +5,11 @@ import { useStore } from '@/store'
 import { onMounted } from 'vue';
 const classe = document.getElementsByClassName('app').item(0);
 
-const mainStore = useStore();
+const { searchAddress } = useStore();
 
 function handleAndress(event: SearchAddressDTO) {
     if (!event) return;
-    mainStore.searchAddress(event);
+    searchAddress(event);
 }
 
 onMounted(() => classe && classe.classList.add('app__background__color'));

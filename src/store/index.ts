@@ -8,7 +8,6 @@ import { CartModel } from '@/models/cartModel';
 
 interface State {
     products: ProductModel[];
-    cart: ProductModel[];
     cartModel: CartModel | null;
     andress: string,
     pocId: any;
@@ -16,18 +15,15 @@ interface State {
         lat: string;
         lng: string;
     } | null;
-    totalPrice: number;
     loading: boolean;
 }
 
 const stateInitial = {
     products: [],
-    cart: [],
     cartModel: new CartModel(),
     andress: '',
     pocId: '',
     geocoder: null,
-    totalPrice: 0,
     loading: false
 }
 
@@ -35,12 +31,7 @@ export const useStore = defineStore('main', {
     state: (): State => (stateInitial),
     getters: {
         getProducts: (state) => state.products,
-        getPocId(state) { 
-            return state.pocId; 
-        },
-        getCartTotalPrice() {
-            this.cartModel?.getTotalPrice();
-        }
+        getPocId: (state) => state.pocId,
     },
     actions: {
         searchAddress(parameter: { pocSearchLat: string; pocSearchLong: string; address?: string }) {
@@ -56,7 +47,7 @@ export const useStore = defineStore('main', {
                 this.setCoords({ lat: parameter.pocSearchLat, lng: parameter.pocSearchLong });
 
                 this.searchProducts({ pocId: response.id })
-                
+
                 this.loading = resp.loading;
 
                 if (resp.error) {
@@ -64,10 +55,10 @@ export const useStore = defineStore('main', {
                 }
             });
         },
-        searchProducts(parameter: {pocId: string; productsSerach?: string; productsCategoryId?: string; }) {
+        searchProducts(parameter: { pocId: string; productsSerach?: string; productsCategoryId?: string; }) {
             if (!parameter.pocId) {
                 throw new Error('Sem Identificador do estabelecimento.');
-            } 
+            }
 
             const { onResult, loading } = useQuery(GraphqlQueriesService.allProduct, parameter);
 
@@ -84,7 +75,7 @@ export const useStore = defineStore('main', {
                     throw new Error('Não foi possível encontrar os produtos');
                 }
 
-                router.push({ name: 'products'})
+                router.push({ name: 'products' })
 
             });
         },
@@ -103,10 +94,8 @@ export const useStore = defineStore('main', {
             this.geocoder = geocoder;
         },
         addProductToCart(product: ProductModel) {
-            this.totalPrice += product.price
-            this.cart.push(product);
             this.cartModel?.addProduct(product);
-            
+
         },
         removeProductFromCart(product: ProductModel) {
             this.cartModel?.removeProduct(product);
@@ -116,9 +105,8 @@ export const useStore = defineStore('main', {
             this.geocoder = null;
             this.pocId = '';
             this.removeCart();
-        }, 
+        },
         removeCart() {
-            this.cart = [];
             this.cartModel = null;
         }
     }

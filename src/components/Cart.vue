@@ -2,7 +2,7 @@
 import shoppingCart from '@/assets/images/shopping-cart.png';
 import { useStore } from '@/store';
 import { storeToRefs } from 'pinia';
-const { totalPrice, cartModel } = storeToRefs(useStore());
+const { cartModel } = storeToRefs(useStore());
 
 </script>
 <template>
@@ -13,7 +13,7 @@ const { totalPrice, cartModel } = storeToRefs(useStore());
             </small>
         </transition>
         <transition name="slide-fade" mode="out-in">
-            <div class="cart__content" :key="totalPrice">
+            <div class="cart__content" :key="cartModel?.getTotalPrice()">
                 <p v-currency="cartModel?.getTotalPrice()" class="cart__price"></p>
             </div>
         </transition>
@@ -27,6 +27,7 @@ const { totalPrice, cartModel } = storeToRefs(useStore());
     position: relative;
     color: #fff;
 }
+
 .cart__image {
     position: relative;
     width: 56px;
@@ -41,7 +42,7 @@ const { totalPrice, cartModel } = storeToRefs(useStore());
     cursor: pointer;
 }
 
-.cart__image > img {
+.cart__image>img {
     width: 48px;
     height: 48px;
     color: #fff;
@@ -57,7 +58,7 @@ const { totalPrice, cartModel } = storeToRefs(useStore());
     user-select: none;
 }
 
-.cart > small {
+.cart>small {
     position: absolute;
     z-index: 3;
     flex-shrink: 0;
@@ -73,10 +74,11 @@ const { totalPrice, cartModel } = storeToRefs(useStore());
     background: var(--primary-color);
     border-radius: 50%;
 }
+
 .cart__price {
     font-size: 12px;
     padding: 4px;
     color: var(--on-primary);
-   
+
 }
 </style>
