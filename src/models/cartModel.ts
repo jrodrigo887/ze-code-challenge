@@ -17,11 +17,14 @@ export class CartModel {
 
     removeProduct(product: ProductModel): void {
         const i = this.products.lastIndexOf(product);
+        console.log('total ', this.getTotalProducts())
         if (i && i > -1) {
             this.products.splice(i, 1);
             this.decresePrice(product);
-        }
-        if (i > -1 && i < 1) {
+        } else if (i === 0 && this.getTotalProducts() > 1) {
+            this.products.shift();
+            this.decresePrice(product);
+        } else if (i === 0 && this.getTotalProducts() === 1) {
             this.products.pop();
             this.decresePrice(product);
         }
