@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import Header from '@/layout/Header.vue';
 import Footer from '@/layout/Footer.vue';
+import Modal from '@/components/Modal.vue';
+import { useStore } from './store';
+import { storeToRefs } from 'pinia';
+
+const { loading } = storeToRefs(useStore());
 
 </script>
-
 <template>
+    <Modal :loading="loading" title='Carregando...' subtitle=''></Modal>
     <div class="app app__background__color">
         <Header />
         <main class="app__content">
@@ -25,6 +30,7 @@ import Footer from '@/layout/Footer.vue';
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    align-items: stretch;
  }
 
  .app__background__color {
@@ -32,6 +38,10 @@ import Footer from '@/layout/Footer.vue';
  }
 
 .app__content {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex: 1;
     width: 100%;
     height: 100%;
     overflow: auto;
@@ -44,5 +54,4 @@ import Footer from '@/layout/Footer.vue';
         width: 100%;
     }
 }
-
 </style>
