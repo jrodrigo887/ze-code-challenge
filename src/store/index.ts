@@ -16,6 +16,9 @@ interface State {
         lng: string;
     } | null;
     loading: boolean;
+    openModal: boolean;
+    titleModal?: string;
+    subtitleModal?: string;
 }
 
 const stateInitial = {
@@ -24,7 +27,10 @@ const stateInitial = {
     andress: '',
     pocId: '',
     geocoder: null,
-    loading: false
+    loading: false,
+    openModal: false,
+    titleModal: '',
+    subtitleModal: '',
 }
 
 export const useStore = defineStore('main', {
@@ -36,44 +42,72 @@ export const useStore = defineStore('main', {
     actions: {
         searchAddress(parameter: { pocSearchLat: string; pocSearchLong: string; address?: string }) {
             const { onResult, loading } = useQuery(GraphqlQueriesService.searchEstablishment, parameter);
-            this.loading = loading.value;
+
+            this.activeModal({
+                open: loading.value,
+                title: 'Pesquisando...',
+                subtitle: 'Estamos pesquisando o estabelecimento mais próximo!'
+            })
+
             let response: any;
 
             onResult(resp => {
-                response = resp.data.pocSearch[0] ?? [];
-
-                this.setAddress(parameter.address);
-                this.setPocId(response?.id);
-                this.setCoords({ lat: parameter.pocSearchLat, lng: parameter.pocSearchLong });
-
-                this.searchProducts({ pocId: response.id })
-
-                this.loading = resp.loading;
+                response = resp.data?.pocSearch[0] || [];
 
                 if (resp.error) {
+                    this.activeModal({
+                        open: loading.value,
+                        title: 'Ops...',
+                        subtitle: 'Não foi possível localizar o endereço \ntente novamente ou um novo endereço.'
+                    })
+
                     throw new Error('Não foi possível localizar o endereço');
                 }
+
+
+                this.setCoords({ lat: parameter.pocSearchLat, lng: parameter.pocSearchLong });
+                this.searchProducts({ pocId: response.id }, parameter.address)
+
+                this.loading = resp.loading;
             });
         },
-        searchProducts(parameter: { pocId: string; productsSerach?: string; productsCategoryId?: string; }) {
+        searchProducts(parameter: { pocId: string; productsSerach?: string; productsCategoryId?: string; }, address?: string) {
+
             if (!parameter.pocId) {
-                throw new Error('Sem Identificador do estabelecimento.');
+                this.activeModal({
+                    open: true,
+                    title: 'Não encontramos nada nesse endereço.',
+                    subtitle: 'Tente novamente ou informe um novo endereço.'
+                });
+                return;
+                // throw new Error('Sem Identificador do estabelecimento.');
             }
 
             const { onResult, loading } = useQuery(GraphqlQueriesService.allProduct, parameter);
-
-            this.loading = loading.value;
             let response: any;
 
+            this.activeModal({
+                open: loading.value,
+                title: 'Carregando...',
+                subtitle: '',
+            });
 
             onResult(result => {
                 response = result.data.poc?.products ?? [] as ProductDTO[];
 
-                this.setProducts(response);
-
                 if (result.error) {
+                    this.activeModal({
+                        open: true,
+                        title: 'Não foi possível encontrar os produtos',
+                        subtitle: ''
+                    });
+
                     throw new Error('Não foi possível encontrar os produtos');
                 }
+
+                this.setProducts(response);
+                this.setAddress(address);
+                this.setPocId(parameter.pocId);
 
                 router.push({ name: 'products' })
 
@@ -83,6 +117,7 @@ export const useStore = defineStore('main', {
             products.forEach(pd => {
                 this.products.push(ProductModel.fromProductModel(pd))
             });
+            this.activeModal({ open: false, title: '', subtitle: '' });
         },
         setAddress(andress?: string) {
             this.andress = andress ?? '';
@@ -108,6 +143,11 @@ export const useStore = defineStore('main', {
         },
         removeCart() {
             this.cartModel = null;
+        },
+        activeModal(modal: { open: boolean, title?: string, subtitle?: string }) {
+            this.openModal = modal.open;
+            this.titleModal = modal.title ?? '';
+            this.subtitleModal = modal.subtitle ?? '';
         }
     }
 });

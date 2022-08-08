@@ -5,16 +5,18 @@ import Modal from '@/components/Modal.vue';
 import { useStore } from './store';
 import { storeToRefs } from 'pinia';
 
-const { loading } = storeToRefs(useStore());
+const { activeModal } = useStore();
+const { openModal, titleModal, subtitleModal } = storeToRefs(useStore())
 
 </script>
 <template>
-    <Modal :loading="loading" title='Carregando...' subtitle=''></Modal>
+    <Modal @pressed="activeModal({ open: false })" :loading="openModal" :title="titleModal" :subtitle="subtitleModal">
+    </Modal>
     <div class="app app__background__color">
         <Header />
         <main class="app__content">
             <router-view v-slot="{ Component }">
-                <transition  name="fade" mode="out-in">
+                <transition name="fade" mode="out-in">
                     <component :is="Component" />
                 </transition>
             </router-view>
@@ -26,16 +28,16 @@ const { loading } = storeToRefs(useStore());
 </template>
 
 <style>
- .app {
+.app {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: stretch;
- }
+}
 
- .app__background__color {
+.app__background__color {
     background: var(--bgc-gradient);
- }
+}
 
 .app__content {
     display: flex;

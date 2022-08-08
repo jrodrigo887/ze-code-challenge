@@ -1,23 +1,30 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-    interface Props {
-        loading: boolean;
-        title: string,
-        subtitle: string,
-    }
+import { useModal } from '@/composable/modal';
 
-    let openModal = ref(false);
+import { ref, toRef, toRefs } from 'vue';
+interface Props {
+    loading: boolean;
+    title?: string,
+    subtitle?: string,
+}
 
-    const { title, subtitle, loading } = defineProps<Props>();
+const { title, subtitle, loading } = defineProps<Props>();
 
+interface Emits {
+    (e: 'pressed'): void;
+}
+
+const emit = defineEmits<Emits>()
 </script>
 
 <template>
     <Teleport to="body">
-        <div v-if="loading" class="modal">
-            <h1 class="modal__title">Carrengando...</h1>
-            <small></small>
-            <button v-on:click="openModal = false">close</button>
+        <div v-if="loading" class="modal" :key="title">
+            <div class="modal__title">
+                <h1>{{ title }}</h1>
+                <p>{{ subtitle }}</p>
+            </div>
+            <button v-on:click="emit('pressed')">Close</button>
         </div>
     </Teleport>
 </template>
@@ -32,6 +39,7 @@ import { ref } from 'vue';
     z-index: 999;
     background-color: #fff;
 }
+
 .modal button {
     position: absolute;
     padding: 16px;
@@ -44,12 +52,18 @@ import { ref } from 'vue';
     bottom: 16px;
     right: 16px;
 }
+
 .modal__title {
     height: 100%;
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    color: var(--on-background-color);
+}
+
+.modal__title>h1 {
     color: var(--on-background-color);
 }
 </style>

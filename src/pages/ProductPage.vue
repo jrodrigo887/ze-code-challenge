@@ -13,10 +13,10 @@ const { addProductToCart, removeProductFromCart } = useStore();
 const router = useRouter();
 
 function selectCategory(categoryId: string) {
-    console.log(categoryId);
+    //
 }
 
-const categories:{id:string; title: string;}[]  = [
+const categories: { id: string; title: string; }[] = [
     {
         id: '123',
         title: 'Vinho'
@@ -34,7 +34,7 @@ const categories:{id:string; title: string;}[]  = [
 function loadData() {
     classe && classe.classList.remove('app__background__color');
 
-    if((products.value.length <= 0)) {
+    if ((products.value.length <= 0)) {
         router.replace({ name: 'home' });
     }
 }
@@ -50,7 +50,8 @@ onMounted(() => loadData());
 
         <!-- Lista de cards -->
         <div class="product__cards">
-            <ProductCard @add-product="addProductToCart" @remove-product="removeProductFromCart" :products="products"></ProductCard>
+            <ProductCard @add-product="addProductToCart" @remove-product="removeProductFromCart" :products="products">
+            </ProductCard>
         </div>
     </div>
 </template>
@@ -64,6 +65,7 @@ onMounted(() => loadData());
     margin: 12px 0;
     padding: 6px 16px;
 }
+
 .product__cards {
     display: flex;
     flex-wrap: wrap;
@@ -77,5 +79,4 @@ onMounted(() => loadData());
         justify-content: center;
     }
 }
-
 </style>
